@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Baking Time</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Recipe Name</string>
     <string name="add_widget">Add widget</string>
     <string name="ingredients">INGREDIENTS</string>
     <string name="steps">STEPS</string>
+    <string name="widget_no_recipe_selected">Please select your favorite recipe in the app to see its ingredients</string>
 </resources>

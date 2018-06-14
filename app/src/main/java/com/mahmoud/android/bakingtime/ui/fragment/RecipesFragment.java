@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mahmoud.android.bakingtime.R;
-import com.mahmoud.android.bakingtime.ui.adapter.RecipesAdapter;
 import com.mahmoud.android.bakingtime.model.Recipe;
 import com.mahmoud.android.bakingtime.recipesapi.RecipesApiClient;
 import com.mahmoud.android.bakingtime.recipesapi.RecipesApiInterface;
+import com.mahmoud.android.bakingtime.ui.adapter.RecipesAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,10 +76,10 @@ public class RecipesFragment extends Fragment implements RecipesAdapter.RecipesA
     }
 
     void loadRecipes(){
-        Call<Recipe[]> loadRecipeCall = apiService.loadRecipeList();
-        loadRecipeCall.enqueue(new Callback<Recipe[]>() {
+//        Call<Recipe[]> loadRecipeCall = apiService.loadRecipeList();
+        apiService.loadRecipeList().enqueue(new Callback<Recipe[]>() {
             @Override
-            public void onResponse(Call<Recipe[]>call, Response<Recipe[]> response) {
+            public void onResponse(Call<Recipe[]> call, Response<Recipe[]> response) {
                 if(response.body() !=null) {
                     mRecipes = response.body();
                     mRecipesAdapter.setRecipes(mRecipes);
@@ -90,7 +90,6 @@ public class RecipesFragment extends Fragment implements RecipesAdapter.RecipesA
 
             @Override
             public void onFailure(Call<Recipe[]>call, Throwable t) {
-//                Toast.makeText(this.getContext(), "Failed to retrieve recipe list", Toast.LENGTH_SHORT).show();
                 Log.d(TAG,"Failed to retrieve recipe list - failed" + t.getLocalizedMessage());
             }
         });

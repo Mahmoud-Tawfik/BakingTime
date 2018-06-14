@@ -2,7 +2,6 @@ package com.mahmoud.android.bakingtime.ui.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +33,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     public class RecipesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final TextView mRecipeNameTextView;
         public final ImageView mBackgroundImageView;
-        public final ConstraintLayout mBorderLayout;
 
         public RecipesAdapterViewHolder(View view) {
             super(view);
             mRecipeNameTextView = (TextView) view.findViewById(R.id.tv_recipe_name);
             mBackgroundImageView = (ImageView) view.findViewById(R.id.iv_background);
-            mBorderLayout = (ConstraintLayout) view.findViewById(R.id.layout_border);
             view.setOnClickListener(this);
         }
 
@@ -80,11 +77,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
         int backgroundPlaceholder = (AndroidImageAssets.backgrounds.get((position + 1) % AndroidImageAssets.backgrounds.size()))-1;
         Picasso.with(context).load(uri).placeholder(backgroundPlaceholder).into(holder.mBackgroundImageView);
 
-        if (selectable && position == selectedPosition){
-            holder.mBorderLayout.setVisibility(View.VISIBLE);
-        } else {
-            holder.mBorderLayout.setVisibility(View.INVISIBLE);
-        }
+//        if (selectable && position == selectedPosition){
+//            holder.mBorderLayout.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.mBorderLayout.setVisibility(View.INVISIBLE);
+//        }
     }
 
     @Override

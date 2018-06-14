@@ -9,7 +9,7 @@
     </style>
 
     <style name="LandscapeFullScreen" parent="@style/AppTheme">
-        <item name="windowNoTitle">false</item>
-        <item name="android:windowFullscreen">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

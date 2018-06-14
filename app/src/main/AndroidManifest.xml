@@ -19,14 +19,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.DetailsActivity"
-            android:parentActivityName=".ui.activity.RecipesActivity"
-            android:theme="@style/FullScreen">
+            android:name=".ui.activity.RecipeDetailsActivity"
+            android:parentActivityName=".ui.activity.RecipesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.RecipesActivity" />
         </activity>
-
+        <activity
+            android:name=".ui.activity.RecipeStepsActivity"
+            android:parentActivityName=".ui.activity.RecipesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.RecipesActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activity.StepDetailsActivity"
+            android:parentActivityName=".ui.activity.RecipeStepsActivity"
+            android:theme="@style/LandscapeFullScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.RecipeStepsActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activity.StepsActivity"
+            android:parentActivityName=".ui.activity.RecipeStepsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.RecipeStepsActivity" />
+        </activity>
         <receiver android:name=".RecipesWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -36,6 +56,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/recipes_widget_info" />
         </receiver>
+        <service
+            android:name=".WidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

@@ -21,8 +21,18 @@ import java.util.List;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapterViewHolder> {
     private List<Step> mStep;
+    private int selectedPosition = -1;
+    public Boolean selectable = false;
 
-    public StepsAdapter() {
+
+    final private StepsAdapterOnClickHandler mClickHandler;
+
+    public interface StepsAdapterOnClickHandler {
+        void onClick(int step);
+    }
+
+    public StepsAdapter(StepsAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
     }
 
     @Override
@@ -35,8 +45,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
         return new StepsAdapterViewHolder(view);
     }
 
-    public class StepsAdapterViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView mThumnailImageView;
+    public class StepsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public final ImageView mThumbnailImageView;
         public final TextView mShortDescriptionTextView;
         public final TextView mDescriptionTextView;
         public final ImageView mVideoImageView;
@@ -44,11 +54,21 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
         public StepsAdapterViewHolder(View view) {
             super(view);
 
-            mThumnailImageView = (ImageView) view.findViewById(R.id.thumbnail_image_view);
+            mThumbnailImageView = (ImageView) view.findViewById(R.id.thumbnail_image_view);
             mShortDescriptionTextView = (TextView) view.findViewById(R.id.short_decription_text_view);
             mDescriptionTextView = (TextView) view.findViewById(R.id.decription_text_view);
             mVideoImageView = (ImageView) view.findViewById(R.id.video_image_view);
+            view.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (selectable) notifyItemChanged(selectedPosition);
+            selectedPosition = getAdapterPosition();
+            mClickHandler.onClick(selectedPosition);
+            if (selectable) notifyItemChanged(selectedPosition);
+        }
+
     }
 
     @Override
@@ -58,9 +78,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
         holder.mShortDescriptionTextView.setText(step.getShortDescription());
         holder.mDescriptionTextView.setText(step.getDescription());
 
-        Context context = holder.mThumnailImageView.getContext();
+        Context context = holder.mThumbnailImageView.getContext();
         Uri uri = Uri.parse(step.getThumbnailURL());
-        Picasso.with(context).load(uri).into(holder.mThumnailImageView);
+        Picasso.with(context).load(uri).into(holder.mThumbnailImageView);
 
         holder.mVideoImageView.setVisibility(step.getVideoURL().isEmpty() ? View.INVISIBLE : View.VISIBLE);
         holder.mVideoImageView.setId(position);
