@@ -5,4 +5,8 @@
     <string name="ingredients">INGREDIENTS</string>
     <string name="steps">STEPS</string>
     <string name="widget_no_recipe_selected">Please select your favorite recipe in the app to see its ingredients</string>
+    <string name="desired_recipe_ingredients">desired_recipe_ingredients</string>
+    <string name="desired_recipe_name">desired_recipe_name</string>
+    <string name="error_null">Failed to retrieve recipe list - Null response</string>
+    <string name="error_failed">Failed to retrieve recipe list - failed</string>
 </resources>

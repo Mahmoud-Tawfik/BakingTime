@@ -30,8 +30,8 @@ public class RecipesWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipes_widget);
             views.setRemoteAdapter(R.id.widget_list_view, serviceIntent);
 
-            String recipeName = PreferenceManager.getDefaultSharedPreferences(context).getString("desired_recipe_name", "");
-            views.setTextViewText(R.id.recipe_name, recipeName == "" ? context.getString(R.string.widget_no_recipe_selected) : recipeName);
+            String recipeName = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.desired_recipe_name), "");
+            views.setTextViewText(R.id.recipe_name, recipeName.isEmpty() ? context.getString(R.string.widget_no_recipe_selected) : recipeName);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_view);

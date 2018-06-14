@@ -50,8 +50,8 @@ public class RecipesActivity extends AppCompatActivity implements OnRecipeClickL
             Ingredient ingredient = recipe.getIngredients().get(i);
             ingredients += ingredient.getQuantity() + " " + ingredient.getMeasure() + " " + ingredient.getIngredient() + (i == (recipe.getIngredients().size() - 1) ? "" : ";,");
         }
-        prefsEditor.putString("desired_recipe_ingredients", ingredients);
-        prefsEditor.putString("desired_recipe_name", recipe.getName());
+        prefsEditor.putString(getString(R.string.desired_recipe_ingredients), ingredients);
+        prefsEditor.putString(getString(R.string.desired_recipe_name), recipe.getName());
         prefsEditor.commit();
 
         AppWidgetManager manager = AppWidgetManager.getInstance(this);

@@ -3,7 +3,6 @@ package com.mahmoud.android.bakingtime;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -23,8 +22,7 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     @Override
     public void onDataSetChanged() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mIngredients = prefs.getString("desired_recipe_ingredients", "").split(";,");
-        Log.d("Widget", prefs.getString("desired_recipe_ingredients", ""));
+        mIngredients = prefs.getString(mContext.getString(R.string.desired_recipe_ingredients), "").split(";,");
     }
 
     @Override

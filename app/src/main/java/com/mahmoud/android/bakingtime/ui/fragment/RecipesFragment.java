@@ -84,13 +84,13 @@ public class RecipesFragment extends Fragment implements RecipesAdapter.RecipesA
                     mRecipes = response.body();
                     mRecipesAdapter.setRecipes(mRecipes);
                 } else {
-                    Log.d(TAG,"Failed to retrieve recipe list - Null response");
+                    Log.d(TAG,getString(R.string.error_null));
                 }
             }
 
             @Override
             public void onFailure(Call<Recipe[]>call, Throwable t) {
-                Log.d(TAG,"Failed to retrieve recipe list - failed" + t.getLocalizedMessage());
+                Log.d(TAG,getString(R.string.error_failed) + t.getLocalizedMessage());
             }
         });
     }
