@@ -25,6 +25,8 @@ public class StepDetailsActivity extends AppCompatActivity {
     private final static String CURRENT_RECIPE = "current_recipe";
     private final static String CURRENT_STEP = "current_step";
 
+    StepDetailsFragment stepDetailsFragment;
+
     public @BindView(R.id.previous_step) Button previousStep;
     public @BindView(R.id.next_step) Button nextStep;
 
@@ -41,29 +43,35 @@ public class StepDetailsActivity extends AppCompatActivity {
             }
         }
 
-        if (savedInstanceState == null){
-            addStepDetailsFragment();
-        } else {
+        if (savedInstanceState != null){
             recipe = savedInstanceState.getParcelable(CURRENT_RECIPE);
             currentStep = savedInstanceState.getInt(CURRENT_STEP);
-            addStepDetailsFragment();
+            stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "StepDetailsFragment");
         }
+        addStepDetailsFragment();
     }
 
     private void addStepDetailsFragment(){
         if (previousStep != null) previousStep.setVisibility(currentStep == -1 ? View.INVISIBLE : View.VISIBLE);
         if (nextStep != null) nextStep.setVisibility(currentStep == recipe.getSteps().size()-1 ? View.INVISIBLE : View.VISIBLE);
 
-        if (currentStep == -1){
-            addIngredientsFragment();
-        } else {
-            StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
-            stepDetailsFragment.recipe = recipe;
-            stepDetailsFragment.currentStep = currentStep;
+        if (stepDetailsFragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.step_details_container, stepDetailsFragment)
                     .commit();
+        } else {
+            if (currentStep == -1){
+                addIngredientsFragment();
+            } else {
+                stepDetailsFragment = new StepDetailsFragment();
+                stepDetailsFragment.recipe = recipe;
+                stepDetailsFragment.currentStep = currentStep;
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.step_details_container, stepDetailsFragment)
+                        .commit();
+            }
         }
     }
 
@@ -71,6 +79,7 @@ public class StepDetailsActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(CURRENT_RECIPE, recipe);
         outState.putInt(CURRENT_STEP, currentStep);
+        getSupportFragmentManager().putFragment(outState, "StepDetailsFragment", stepDetailsFragment);
         super.onSaveInstanceState(outState);
     }
 

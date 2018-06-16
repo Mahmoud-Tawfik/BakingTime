@@ -2,6 +2,7 @@ package com.mahmoud.android.bakingtime.ui.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,6 +38,13 @@ import butterknife.ButterKnife;
  */
 
 public class StepDetailsFragment extends Fragment {
+    private final static String CURRENT_PLAY_STATE = "current_play_state";
+    private final static String CURRENT_PLAYER_POSITION = "current_player_position";
+    private final static String CURRENT_RECIPE = "current_recipe";
+    private final static String CURRENT_STEP = "current_step";
+    Boolean currentPlayState = true;
+    long currentPlayerPosition = 0L;
+
     public Recipe recipe;
     public int currentStep;
     SimpleExoPlayer player;
@@ -52,6 +60,13 @@ public class StepDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
         ButterKnife.bind(this, rootView);
+
+        if(savedInstanceState != null) {
+            currentPlayState = savedInstanceState.getBoolean(CURRENT_PLAY_STATE);
+            currentPlayerPosition = savedInstanceState.getLong(CURRENT_PLAYER_POSITION);
+            recipe = savedInstanceState.getParcelable(CURRENT_RECIPE);
+            currentStep = savedInstanceState.getInt(CURRENT_STEP);
+        }
 
         if (recipe != null){
             updateUI();
@@ -85,9 +100,20 @@ public class StepDetailsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (player!=null) {
+            currentPlayState = player.getPlayWhenReady();
+            currentPlayerPosition = player.getCurrentPosition();
             player.release();
             player = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(CURRENT_PLAY_STATE, player != null ? player.getPlayWhenReady() : currentPlayState);
+        outState.putLong(CURRENT_PLAYER_POSITION, player != null ? player.getCurrentPosition() : currentPlayerPosition);
+        outState.putParcelable(CURRENT_RECIPE, recipe);
+        outState.putInt(CURRENT_STEP, currentStep);
+        super.onSaveInstanceState(outState);
     }
 
     private void initializePlayer(){
@@ -109,6 +135,7 @@ public class StepDetailsFragment extends Fragment {
                 dataSourceFactory, extractorsFactory, null, null);
 
         player.prepare(videoSource);
-        player.setPlayWhenReady(true);
+        player.setPlayWhenReady(currentPlayState);
+        player.seekTo(currentPlayerPosition);
     }
 }

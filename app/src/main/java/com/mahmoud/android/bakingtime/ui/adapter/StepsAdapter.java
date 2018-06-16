@@ -88,15 +88,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
         ImageView.OnClickListener videoClickListener = new ImageView.OnClickListener() {
             public void onClick(View v) {
                 String videoUrl = mStep.get(v.getId()).getVideoURL();
-
-//                DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-//                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-//                        Util.getUserAgent(context, "yourApplicationName"), bandwidthMeter);
-//                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-//                MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri,
-//                        dataSourceFactory, extractorsFactory, null, null);
-//                player.prepare(videoSource);
-
             }
         };
         holder.mVideoImageView.setOnClickListener(videoClickListener);
@@ -105,8 +96,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
 
     @Override
     public int getItemCount() {
-        if (null == mStep) return 0;
-        return mStep.size();
+        return mStep == null ? 0 : mStep.size();
     }
 
     public void setSteps(List<Step> steps){

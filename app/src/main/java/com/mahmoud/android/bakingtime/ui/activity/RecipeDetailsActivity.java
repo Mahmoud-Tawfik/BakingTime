@@ -23,6 +23,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepCl
     private final static String CURRENT_RECIPE = "current_recipe";
     private final static String CURRENT_STEP = "current_step";
 
+    StepDetailsFragment stepDetailsFragment;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
@@ -46,23 +48,21 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepCl
         } else {
             recipe = savedInstanceState.getParcelable(CURRENT_RECIPE);
             currentStep = savedInstanceState.getInt(CURRENT_STEP, -1);
+            stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "StepDetailsFragment");
 
             RecipeStepsFragment stepsFragment = (RecipeStepsFragment) getSupportFragmentManager().findFragmentById(R.id.steps_container);
             stepsFragment.recipe = recipe;
             if (mTwoPane){
-                if (currentStep >= 0){
+                if (stepDetailsFragment != null){
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.step_details_container, stepDetailsFragment)
+                            .commit();
+                } else if (currentStep >= 0){
                     addStepDetailsFragmentForStep(currentStep);
                 } else {
                     addIngredientsFragment();
                 }
-            }
-        }
-
-        if (mTwoPane){
-            if (currentStep >= 0){
-                addStepDetailsFragmentForStep(currentStep);
-            } else {
-                addIngredientsFragment();
             }
         }
 
@@ -106,9 +106,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepCl
     }
 
     private void addStepDetailsFragmentForStep(int step){
-        StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+        stepDetailsFragment = new StepDetailsFragment();
         stepDetailsFragment.recipe = recipe;
         stepDetailsFragment.currentStep = step;
+        currentStep = step;
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.step_details_container, stepDetailsFragment)
@@ -119,6 +120,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepCl
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(CURRENT_RECIPE, recipe);
         outState.putInt(CURRENT_STEP, currentStep);
+        getSupportFragmentManager().putFragment(outState, "StepDetailsFragment", stepDetailsFragment);
         super.onSaveInstanceState(outState);
     }
 }
